@@ -55,7 +55,7 @@ const scrapData = async () => {
     archived = await requestData(archivedBookmarks);
     result.push(...saved);
     result.push(...archived);
-    console.log("Scrapped : ", result.length, " articles");
+    console.log("Scrapped: ", result.length, " articles");
     return (result);
 };
 
