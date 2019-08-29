@@ -1,5 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -32,11 +33,13 @@ const useStyles = makeStyles({
     }
 });
 
-export default function ArticleCard({title, description, url, image, author, type}) {
+export default function ArticleCard({title, description, url, image, author, type, delay = 0}) {
     const classes = useStyles();
+    const [visible, setVisible] = useState(false);
 
+    setTimeout(() => setVisible(true), delay);
     return (
-        <Grow in={true}>
+        <Grow in={visible}>
             <Card className={classes.card}>
                 <CardActionArea className={classes.content} href={url} target={'_blank'}>
                     <CardHeader

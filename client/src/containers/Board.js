@@ -26,6 +26,7 @@ export default function Board() {
             }
         }
     `);
+    let delay = 0;
 
     if (loading) return <Loading/>
     if (error) return <p>Error :(</p>;
@@ -37,12 +38,15 @@ export default function Board() {
             justify="center"
             alignItems="center"
         >
-            {data.articles.map(({title, url, description, author, image, type}) => (
-                <div key={title} className={classes.cardContainer}>
-                    <ArticleCard title={title} author={author} description={description} url={url} image={image}
-                                 type={type}/>
-                </div>
-            ))}
+            {data.articles.map(({title, url, description, author, image, type}) => {
+                delay += 30;
+                return (
+                    <div key={title} className={classes.cardContainer}>
+                        <ArticleCard title={title} author={author} description={description} url={url} image={image}
+                                     type={type} delay={delay}/>
+                    </div>
+                );
+            })}
         </Grid>
 
     );
