@@ -35,8 +35,8 @@ export default function Board() {
             alignItems="center"
         >
             {data.articles.map(({title, url, description, author}) => (
-                <div className={classes.cardContainer}>
-                    <ArticleCard key={title} title={title} author={author} description={description} url={url}/>
+                <div key={title} className={classes.cardContainer}>
+                    <ArticleCard title={title} author={author} description={description} url={url}/>
                 </div>
             ))}
         </Grid>

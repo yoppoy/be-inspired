@@ -6,6 +6,7 @@ module.exports = buildSchema(`
         title: String!
         author: String
         description: String!
+        image: String
         url: String!
         type: String!
         hidden: Boolean!

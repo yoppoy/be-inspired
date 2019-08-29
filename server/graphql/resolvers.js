@@ -11,7 +11,7 @@ let getArticle = (args) => {
     })[0];
 };
 
-let scrapArticles = async function(args) {
+let scrapArticles = async () => {
     let articles = await mediumScrapper();
 
     articles.map(article => {
@@ -22,6 +22,7 @@ let scrapArticles = async function(args) {
                 author: article.author,
                 description: article.description,
                 url: article.url,
+                image: article.image,
                 type: 'Medium',
                 hidden: false
             })
@@ -32,7 +33,7 @@ let scrapArticles = async function(args) {
 let getArticles = async function(args) {
     let limit = (args.limit) ? args.limit : 0;
 
-    await scrapArticles();
+    //await scrapArticles();
     if (limit > 0)
         return articlesData.slice(limit);
     return articlesData;
@@ -51,5 +52,6 @@ let setArticleVisibility = function({id, visible}) {
 module.exports = {
     getArticle,
     getArticles,
-    setArticleVisibility
+    setArticleVisibility,
+    scrapArticles
 };

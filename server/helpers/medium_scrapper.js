@@ -19,10 +19,13 @@ const archivedBookmarks = {
 const parseData = (html) => {
     const $ = cheerio.load(html);
     let result = [];
+    let styles;
 
     $(".streamItem .link.link--noUnderline.u-baseColor--link").each(function (i, elem) {
         let bm = {};
         if (i % 2 === 0) {
+            styles = String(elem.parent.next.children[0].attribs.style);
+            bm["image"] = styles.substring(styles.indexOf("(") + 1, styles.indexOf(")")).replace("/160/160", "/340/340");
             bm["title"] = elem.children[0].children[0].data;
             bm["author"] = elem.parent.children[1].children[1].prev.children[0].children[0].data;
             bm["description"] = elem.children[1] ? elem.children[1].children[0].data : "";

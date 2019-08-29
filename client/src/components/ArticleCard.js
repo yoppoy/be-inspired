@@ -16,6 +16,10 @@ const useStyles = makeStyles({
     media: {
         height: "inherit"
     },
+    link: {
+        color: 'inherit',
+        textDecoration: 'none'
+    }
 });
 
 export default function ArticleCard({title, description, url}) {
@@ -23,21 +27,23 @@ export default function ArticleCard({title, description, url}) {
 
     return (
         <Card className={classes.card}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="Contemplative Reptile"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {description}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
+            <a className={classes.link} href={url} target={'_blank'}>
+                <CardActionArea>
+                    <CardMedia
+                        className={classes.media}
+                        image="/static/images/cards/contemplative-reptile.jpg"
+                        title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {title}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </a>
         </Card>
     );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { ApolloProvider } from '@apollo/react-hooks';
+import {render} from 'react-dom';
+import {ApolloProvider} from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import * as serviceWorker from './serviceWorker';
 import Board from './containers/Board';
@@ -11,13 +11,11 @@ const client = new ApolloClient({
 
 const App = () => (
     <ApolloProvider client={client}>
-        <div>
-            <Board/>
-        </div>
+        <Board/>
     </ApolloProvider>
 );
 
-render(<App />, document.getElementById('root'));
+render(<App/>, document.getElementById('root'));
 
 
 // If you want your app to work offline and load faster, you can change
