@@ -27,6 +27,7 @@ let scrapArticles = async () => {
                 hidden: false
             })
         }
+        console.log("-> ", articlesData[0].id);
     });
 };
 

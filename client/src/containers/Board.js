@@ -1,36 +1,19 @@
 import React from 'react';
-import {useQuery} from '@apollo/react-hooks';
-import {gql} from 'apollo-boost';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import Grid from '@material-ui/core/Grid';
 import ArticleCard from "../components/ArticleCard";
 import {makeStyles} from "@material-ui/core";
 import Loading from "../components/Loading";
+import {GQL_QUERY_ARTICLES} from "../graphql";
 
-const useStyles = makeStyles(theme => ({
-    cardContainer: {
-        padding: 10,
-    },
-}));
-
-export default function Board() {
+export default function Board({editorMode = false}) {
     const classes = useStyles();
-    const {loading, error, data} = useQuery(gql`
-        {
-            articles {
-                title
-                author
-                description
-                url
-                image
-                type
-            }
-        }
-    `);
+    const {loading, error, data} = useQuery(GQL_QUERY_ARTICLES);
     let delay = 0;
 
-    if (loading) return <Loading/>
+    console.log(editorMode);
+    if (loading) return <Loading/>;
     if (error) return <p>Error :(</p>;
-
     return (
         <Grid
             container
@@ -38,12 +21,11 @@ export default function Board() {
             justify="center"
             alignItems="center"
         >
-            {data.articles.map(({title, url, description, author, image, type}) => {
+            {data.articles.map((article, index) => {
                 delay += 30;
                 return (
-                    <div key={title} className={classes.cardContainer}>
-                        <ArticleCard title={title} author={author} description={description} url={url} image={image}
-                                     type={type} delay={delay}/>
+                    <div key={article.title} className={classes.cardContainer}>
+                        <ArticleCard article={article} editorMode={editorMode} delay={delay}/>
                     </div>
                 );
             })}
@@ -51,3 +33,9 @@ export default function Board() {
 
     );
 }
+
+const useStyles = makeStyles(theme => ({
+    cardContainer: {
+        padding: 10,
+    },
+}));

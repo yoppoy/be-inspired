@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import { useState } from 'react';
+import {useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,12 +8,72 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import {Grow} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import VisibleIcon from '@material-ui/icons/Visibility';
+import InvisibleIcon from '@material-ui/icons/VisibilityOffOutlined';
+import {Grow, Fade} from '@material-ui/core';
+import {useMutation} from "@apollo/react-hooks";
+import {GQL_MUTATION_ARTICLES} from "../graphql";
+
+export default function ArticleCard({article, editorMode = false, delay = 0}) {
+    const classes = useStyles();
+    const [visible, setVisible] = useState(false);
+    const [hidden, setArticleHidden] = useState(article.hidden);
+    const [setArticleVisibility] = useMutation(GQL_MUTATION_ARTICLES);
+
+    setTimeout(() => setVisible(true), delay);
+    return (
+        <Grow in={visible}>
+            <Card className={classes.card}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            {article.type.substring(0, 1)}
+                        </Avatar>
+                    }
+                    title={article.author}
+                    subheader={article.type}
+                    action={<Fade in={editorMode}>
+                        <IconButton aria-label="settings" onClick={() => {
+                            setArticleVisibility({variables: {id: article.id, visible: hidden}});
+                            setArticleHidden(!hidden);
+                        }}>
+                            {hidden ? <InvisibleIcon/> : <VisibleIcon/>}
+                        </IconButton>
+                    </Fade>
+                    }
+                    className={classes.header}
+                />
+                <CardActionArea className={`${classes.content} ${hidden && classes.disabled}`} href={article.url}
+                                target={'_blank'}>
+                    <CardMedia
+                        className={classes.media}
+                        image={article.image}
+                        title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {article.title}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {article.description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </Grow>
+    );
+}
 
 const useStyles = makeStyles({
     card: {
         maxWidth: 345,
-        height: 380
+        height: 380,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    header: {
+        width: 313
     },
     content: {
         display: 'flex',
@@ -30,42 +90,8 @@ const useStyles = makeStyles({
     link: {
         color: 'inherit',
         textDecoration: 'none'
+    },
+    disabled: {
+        opacity: 0.2
     }
 });
-
-export default function ArticleCard({title, description, url, image, author, type, delay = 0}) {
-    const classes = useStyles();
-    const [visible, setVisible] = useState(false);
-
-    setTimeout(() => setVisible(true), delay);
-    return (
-        <Grow in={visible}>
-            <Card className={classes.card}>
-                <CardActionArea className={classes.content} href={url} target={'_blank'}>
-                    <CardHeader
-                        avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar}>
-                                {type.substring(0, 1)}
-                            </Avatar>
-                        }
-                        title={author}
-                        subheader={type}
-                    />
-                    <CardMedia
-                        className={classes.media}
-                        image={image}
-                        title="Contemplative Reptile"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {title}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {description}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        </Grow>
-    );
-}

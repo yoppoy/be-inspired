@@ -1,17 +1,29 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from "react-apollo";
+import {ApolloProvider as ApolloHooksProvider} from "react-apollo-hooks";
 import ApolloClient from 'apollo-boost';
 import * as serviceWorker from './serviceWorker';
-import Board from './containers/Board';
+import './index.css';
+import HeaderBar from "./components/HeaderBar";
+import HomePage from "./containers/HomePage";
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
 });
 
+client.writeData({
+    data: {
+        editorMode: false
+    },
+});
+
 const App = () => (
     <ApolloProvider client={client}>
-        <Board/>
+        <ApolloHooksProvider client={client}>
+            <HeaderBar/>
+            <HomePage/>
+        </ApolloHooksProvider>
     </ApolloProvider>
 );
 

@@ -12,7 +12,7 @@ module.exports = buildSchema(`
         hidden: Boolean!
     }
     type Mutation {
-        setArticleVisibility(id: Int!, visible: Boolean!): Article
+        setArticleVisibility(id: ID!, visible: Boolean!): Article
     }
     type Query {
         article(id: Int!): Article
