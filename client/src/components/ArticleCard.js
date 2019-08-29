@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import {Grow} from '@material-ui/core';
 
 const useStyles = makeStyles({
     card: {
@@ -17,7 +18,8 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        height: '100%'
+        height: '100%',
+        width: 345
     },
     media: {
         width: '100%',
@@ -34,9 +36,9 @@ export default function ArticleCard({title, description, url, image, author, typ
     const classes = useStyles();
 
     return (
-        <Card className={classes.card}>
-            <a className={classes.link} href={url} target={'_blank'}>
-                <CardActionArea className={classes.content}>
+        <Grow in={true}>
+            <Card className={classes.card}>
+                <CardActionArea className={classes.content} href={url} target={'_blank'}>
                     <CardHeader
                         avatar={
                             <Avatar aria-label="recipe" className={classes.avatar}>
@@ -60,7 +62,7 @@ export default function ArticleCard({title, description, url, image, author, typ
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-            </a>
-        </Card>
+            </Card>
+        </Grow>
     );
 }

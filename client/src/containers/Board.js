@@ -4,12 +4,13 @@ import {gql} from 'apollo-boost';
 import Grid from '@material-ui/core/Grid';
 import ArticleCard from "../components/ArticleCard";
 import {makeStyles} from "@material-ui/core";
+import Loading from "../components/Loading";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     cardContainer: {
         padding: 10,
-    }
-});
+    },
+}));
 
 export default function Board() {
     const classes = useStyles();
@@ -26,7 +27,7 @@ export default function Board() {
         }
     `);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading/>
     if (error) return <p>Error :(</p>;
 
     return (
@@ -38,7 +39,8 @@ export default function Board() {
         >
             {data.articles.map(({title, url, description, author, image, type}) => (
                 <div key={title} className={classes.cardContainer}>
-                    <ArticleCard title={title} author={author} description={description} url={url} image={image} type={type}/>
+                    <ArticleCard title={title} author={author} description={description} url={url} image={image}
+                                 type={type}/>
                 </div>
             ))}
         </Grid>
