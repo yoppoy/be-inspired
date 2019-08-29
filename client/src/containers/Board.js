@@ -20,6 +20,8 @@ export default function Board() {
                 author
                 description
                 url
+                image
+                type
             }
         }
     `);
@@ -34,9 +36,9 @@ export default function Board() {
             justify="center"
             alignItems="center"
         >
-            {data.articles.map(({title, url, description, author}) => (
+            {data.articles.map(({title, url, description, author, image, type}) => (
                 <div key={title} className={classes.cardContainer}>
-                    <ArticleCard title={title} author={author} description={description} url={url}/>
+                    <ArticleCard title={title} author={author} description={description} url={url} image={image} type={type}/>
                 </div>
             ))}
         </Grid>
