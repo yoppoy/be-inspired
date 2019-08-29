@@ -10,12 +10,19 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     card: {
-        maxWidth: 345
-    },
-    media: {
-        height: 100
+        maxWidth: 345,
+        height: 380
     },
     content: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        height: '100%'
+    },
+    media: {
+        width: '100%',
+        flex: '1 1 auto',
+        height: '100%'
     },
     link: {
         color: 'inherit',
@@ -29,11 +36,11 @@ export default function ArticleCard({title, description, url, image, author, typ
     return (
         <Card className={classes.card}>
             <a className={classes.link} href={url} target={'_blank'}>
-                <CardActionArea>
+                <CardActionArea className={classes.content}>
                     <CardHeader
                         avatar={
                             <Avatar aria-label="recipe" className={classes.avatar}>
-                                {type.substring(0,1)}
+                                {type.substring(0, 1)}
                             </Avatar>
                         }
                         title={author}
@@ -44,7 +51,7 @@ export default function ArticleCard({title, description, url, image, author, typ
                         image={image}
                         title="Contemplative Reptile"
                     />
-                    <CardContent className={classes.content}>
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             {title}
                         </Typography>
