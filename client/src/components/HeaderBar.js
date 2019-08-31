@@ -3,44 +3,42 @@ import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import {withRouter} from 'react-router-dom'
 import {useApolloClient} from "react-apollo-hooks";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import {useQuery} from "react-apollo-hooks";
-import {GQL_EDITOR_MODE} from "../graphql/localState";
 
-export default function HeaderBar() {
+const HeaderBar = ({location, history}) => {
     const classes = useStyles();
     const classesLabel = useStylesCustomLabel();
     const client = useApolloClient();
-    const {data} = useQuery(GQL_EDITOR_MODE);
 
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        Be inspired
-                    </Typography>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Switch checked={data.editorMode}
-                                             color="default"
-                                             onChange={(event) => client.writeData({data: {editorMode: event.target.checked}})}
-                                             aria-label="Editor mode"/>}
-                            label={'Editor mode'}
-                            classes={classesLabel}
-                        />
-                    </FormGroup>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
-}
+    if (location.pathname === "/editor-mode")
+        return (
+            <div className={classes.root}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography variant="h6" className={classes.title}>
+                            Be inspired
+                        </Typography>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={<Switch checked={true}
+                                                 color="default"
+                                                 onChange={() => history.push('/')}
+                                                 aria-label="Editor mode"/>}
+                                label={'Editor mode'}
+                                classes={classesLabel}
+                            />
+                        </FormGroup>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        );
+    return null;
+};
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,3 +59,5 @@ const useStylesCustomLabel = makeStyles(theme => ({
         fontWeight: 'bold'
     }
 }));
+
+export default withRouter(HeaderBar);

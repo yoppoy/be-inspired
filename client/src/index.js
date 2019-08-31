@@ -9,24 +9,16 @@ import './style/index.css';
 import HeaderBar from "./components/HeaderBar";
 import HomePage from "./containers/HomePage";
 import CustomTheme from "./style/theme";
+import RouterConfig from "./config/RouterConfig";
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
 });
 
-client.writeData({
-    data: {
-        editorMode: false
-    },
-});
-
 const App = () => (
     <ApolloProvider client={client}>
         <ApolloHooksProvider client={client}>
-            <ThemeProvider theme={CustomTheme}>
-                <HeaderBar/>
-                <HomePage/>
-            </ThemeProvider>
+            <RouterConfig/>
         </ApolloHooksProvider>
     </ApolloProvider>
 );

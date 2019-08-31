@@ -1,25 +1,30 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core";
-import {useQuery} from "react-apollo-hooks";
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Board from "./Board";
-import {gql} from "apollo-boost";
-import {GQL_EDITOR_MODE} from "../graphql/localState";
+import Board from "../components/Board";
+import {withRouter} from "react-router-dom";
+import {Parallax} from 'react-scroll-parallax';
+import HomeBanner from "./FullScreen";
 
-export default function HomePage() {
-    const { data } = useQuery(GQL_EDITOR_MODE);
+function HomePage({location}) {
+    const classes = useStyles();
+    let editorMode = false;
 
+    if (location.path === "editor-mode")
+        editorMode = false;
     return (
         <div>
-            <Board editorMode={data.editorMode}/>
+            <HomeBanner img={"/img/background.jpg"}
+                        title={"Learn from your mistakes and move on"}
+                        link={"board"}/>
+            <Board className={classes.board} editorMode={editorMode}/>
         </div>
     );
 }
 
 const useStyles = makeStyles(theme => ({
-    cardContainer: {
-        padding: 10,
-    },
+    board: {
+        paddingTop: '20px'
+    }
 }));
+
+export default withRouter(HomePage);
