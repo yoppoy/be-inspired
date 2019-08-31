@@ -1,7 +1,8 @@
-# be-inspired
+# Be-inspired
+"I read a lot on medium, time to share it with those around me"
+
 NodeJs server scrapping medium bookmarks and serving data to a React App that displays them with a material UI
 
-"I read a lot on medium, time to share it with those around me"
 
 ### Environment variables
 Setup the following environment variables in a `.env` file.
