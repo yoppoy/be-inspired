@@ -1,5 +1,6 @@
 const express_graphql = require('express-graphql');
 const schema = require('./schema');
+const config = require('../config')
 const { getArticle, getArticles, setArticleVisibility } = require('./resolvers');
 
 module.exports = express_graphql({
@@ -9,5 +10,5 @@ module.exports = express_graphql({
         articles: getArticles,
         setArticleVisibility: setArticleVisibility
     },
-    graphiql: true
+    graphiql: config.env !== 'production'
 });
