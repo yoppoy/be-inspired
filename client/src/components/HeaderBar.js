@@ -21,7 +21,7 @@ const HeaderBar = ({location, history}) => {
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            Be inspired
+
                         </Typography>
                         <FormGroup>
                             <FormControlLabel

@@ -12,7 +12,7 @@ const scrollTo = (element, duration = 800, delay = 0) => {
     scroller.scrollTo(element, {
         duration: duration,
         delay: element,
-        smooth: 'easeInOutQuart',
+        smooth: 'easeInOutQuart'
     });
 };
 

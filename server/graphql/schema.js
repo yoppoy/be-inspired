@@ -16,6 +16,6 @@ module.exports = buildSchema(`
     }
     type Query {
         article(id: Int!): Article
-        articles(limit: Int, editorMode: Boolean ): [Article]
+        articles(limit: Int, editorMode: Boolean = false): [Article]
     },
 `);

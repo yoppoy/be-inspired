@@ -19,10 +19,12 @@ const getArticle = (args) => {
 
 const getArticles = async (args) => {
     let limit = (args.limit) ? args.limit : 0;
+    let back = articlesData;
 
     if (limit > 0)
-        return articlesData.slice(limit);
-    return articlesData;
+        back = articlesData.slice(limit);
+    back = (args.editorMode ? back : back.filter((article) => article.visible));
+    return back;
 };
 
 const setArticleVisibility = async ({id, visible}) => {
