@@ -17,10 +17,6 @@ const saveArticles = async (articles) => {
     return (back);
 };
 
-const setArticleVisibility = async (id, visible) => {
-    Article.setVisibility(id, visible);
-};
-
 const scrapArticles = async () => {
     let scrappedArticles = await mediumScrapper();
     let articles = [];
@@ -33,8 +29,7 @@ const scrapArticles = async () => {
                 description: article.description,
                 url: article.url,
                 image: article.image,
-                type: 'Medium',
-                visible: true
+                type: 'Medium'
             })
         }
     });
@@ -44,5 +39,5 @@ const scrapArticles = async () => {
 };
 
 module.exports = {
-    scrapArticles,
+    scrapArticles
 };

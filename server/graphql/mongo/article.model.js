@@ -47,10 +47,11 @@ ArticleSchema.statics = {
      * @param visible
      */
     setVisibility(id, visible) {
+        console.log("Setting visibility : ", id, visible);
         return this.findOneAndUpdate(
             {_id: id},
-            {$setOnInsert: {article: visible}},
-            {});
+            {visible: visible},
+            {new: true});
     },
 
     /**
@@ -80,7 +81,7 @@ ArticleSchema.statics = {
         return this.findOneAndUpdate(
             {title: title},
             {$setOnInsert: {title: title}},
-            {new: true, upsert: true});
+            {setDefaultsOnInsert: true, new: true, upsert: true});
     },
 
     /**

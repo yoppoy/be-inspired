@@ -36,7 +36,7 @@ export default function ArticleCard({article, editorMode = false, delay = 0}) {
                     action={<Fade in={editorMode}>
                         <IconButton aria-label="set-visibility" onClick={() => {
                             setArticleVisibility({variables: {id: article.id, visible: !visible}});
-                            setArticleVisible(visible);
+                            setArticleVisible(!visible);
                         }}>
                             {visible ? <VisibleIcon/> : <InvisibleIcon/>}
                         </IconButton>

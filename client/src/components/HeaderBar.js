@@ -15,6 +15,7 @@ import {GQL_EDITOR_MODE} from "../graphql/localState";
 
 export default function HeaderBar() {
     const classes = useStyles();
+    const classesLabel = useStylesCustomLabel();
     const client = useApolloClient();
     const {data} = useQuery(GQL_EDITOR_MODE);
 
@@ -32,7 +33,7 @@ export default function HeaderBar() {
                                              onChange={(event) => client.writeData({data: {editorMode: event.target.checked}})}
                                              aria-label="Editor mode"/>}
                             label={'Editor mode'}
-                            classes={classes}
+                            classes={classesLabel}
                         />
                     </FormGroup>
                 </Toolbar>
@@ -42,19 +43,21 @@ export default function HeaderBar() {
 }
 
 const useStyles = makeStyles(theme => ({
-        root: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-        title: {
-            flexGrow: 1,
-            color: "white"
-        },
-        label: {
-            color: 'white',
-            fontWeight: 'bold'
-        }
-    }))
-;
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+        color: "white"
+    }
+}));
+
+const useStylesCustomLabel = makeStyles(theme => ({
+    label: {
+        color: 'white',
+        fontWeight: 'bold'
+    }
+}));
