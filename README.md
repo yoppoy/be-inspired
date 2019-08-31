@@ -1,4 +1,4 @@
-# dare-to-inspire
+# be-inspired
 Node/ReactJs App scrapping medium bookmarks and sharing them via a react app to my followers
 
 "I read a lot on medium, time to share it with those around me"

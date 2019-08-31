@@ -1,0 +1,28 @@
+{
+  "name": "be-inspired",
+  "version": "1.0.0",
+  "description": "Find your inspiration",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "node server",
+    "build": "cd server/ && npm install && cd ../client/ && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "server/node_modules",
+    "client/node_modules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yoppoy/dare-to-inspire"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "create-react-app",
+    "react"
+  ],
+  "license": "MIT",
+  "devDependencies": {}
+}
