@@ -1,9 +1,14 @@
 const uuid = require('uuid');
 const mediumScrapper = require('../helpers/medium_scrapper');
+const {scrapArticles} = require('./mongo/article.controller');
 
 let articlesData = [];
 
-let getArticle = (args) => {
+const initArticles = async () => {
+    articlesData = await scrapArticles();
+};
+
+const getArticle = (args) => {
     let id = args.id;
 
     return articlesData.filter(article => {
@@ -11,27 +16,7 @@ let getArticle = (args) => {
     })[0];
 };
 
-let scrapArticles = async () => {
-    let articles = await mediumScrapper();
-
-    articles.map(article => {
-        if (!articlesData.filter(e => e.title === article.title).length > 0) {
-            articlesData.push({
-                id: uuid.v1(),
-                title: article.title,
-                author: article.author,
-                description: article.description,
-                url: article.url,
-                image: article.image,
-                type: 'Medium',
-                hidden: false
-            })
-        }
-        console.log("-> ", articlesData[0].id);
-    });
-};
-
-let getArticles = async function(args) {
+const getArticles = async function(args) {
     let limit = (args.limit) ? args.limit : 0;
 
     //await scrapArticles();
@@ -40,10 +25,10 @@ let getArticles = async function(args) {
     return articlesData;
 };
 
-let setArticleVisibility = function({id, visible}) {
+const setArticleVisibility = function({id, visible}) {
     articlesData.map(article => {
         if (article.id === id) {
-            article.hidden = !visible;
+            article.visible = !visible;
             return article;
         }
     });
@@ -51,8 +36,8 @@ let setArticleVisibility = function({id, visible}) {
 };
 
 module.exports = {
+    initArticles,
     getArticle,
     getArticles,
-    setArticleVisibility,
-    scrapArticles
+    setArticleVisibility
 };

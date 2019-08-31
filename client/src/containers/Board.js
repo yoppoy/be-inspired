@@ -11,7 +11,6 @@ export default function Board({editorMode = false}) {
     const {loading, error, data} = useQuery(GQL_QUERY_ARTICLES);
     let delay = 0;
 
-    console.log(editorMode);
     if (loading) return <Loading/>;
     if (error) return <p>Error :(</p>;
     return (

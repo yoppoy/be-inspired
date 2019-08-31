@@ -10,7 +10,7 @@ export const GQL_QUERY_ARTICLES = gql`
             url
             image
             type
-            hidden
+            visible
         }
     }
 `;
@@ -18,7 +18,7 @@ export const GQL_QUERY_ARTICLES = gql`
 export const GQL_MUTATION_ARTICLES = gql`
     mutation  setArticleVisibility($id: ID!, $visible: Boolean!) {
         setArticleVisibility(id: $id, visible: $visible) {
-            hidden
+            visible
         }
     }
 `;

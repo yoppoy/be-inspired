@@ -17,13 +17,13 @@ import {GQL_MUTATION_ARTICLES} from "../graphql";
 
 export default function ArticleCard({article, editorMode = false, delay = 0}) {
     const classes = useStyles();
-    const [visible, setVisible] = useState(false);
-    const [hidden, setArticleHidden] = useState(article.hidden);
+    const [appear, setAppear] = useState(false);
+    const [visible, setArticleVisible] = useState(article.visible);
     const [setArticleVisibility] = useMutation(GQL_MUTATION_ARTICLES);
 
-    setTimeout(() => setVisible(true), delay);
+    setTimeout(() => setAppear(true), delay);
     return (
-        <Grow in={visible}>
+        <Grow in={appear}>
             <Card className={classes.card}>
                 <CardHeader
                     avatar={
@@ -34,17 +34,17 @@ export default function ArticleCard({article, editorMode = false, delay = 0}) {
                     title={article.author}
                     subheader={article.type}
                     action={<Fade in={editorMode}>
-                        <IconButton aria-label="settings" onClick={() => {
-                            setArticleVisibility({variables: {id: article.id, visible: hidden}});
-                            setArticleHidden(!hidden);
+                        <IconButton aria-label="set-visibility" onClick={() => {
+                            setArticleVisibility({variables: {id: article.id, visible: !visible}});
+                            setArticleVisible(visible);
                         }}>
-                            {hidden ? <InvisibleIcon/> : <VisibleIcon/>}
+                            {visible ? <VisibleIcon/> : <InvisibleIcon/>}
                         </IconButton>
                     </Fade>
                     }
                     className={classes.header}
                 />
-                <CardActionArea className={`${classes.content} ${hidden && classes.disabled}`} href={article.url}
+                <CardActionArea className={`${classes.content} ${!visible && classes.disabled}`} href={article.url}
                                 target={'_blank'}>
                     <CardMedia
                         className={classes.media}

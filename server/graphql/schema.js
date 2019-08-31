@@ -9,7 +9,7 @@ module.exports = buildSchema(`
         image: String
         url: String!
         type: String!
-        hidden: Boolean!
+        visible: Boolean!
     }
     type Mutation {
         setArticleVisibility(id: ID!, visible: Boolean!): Article
