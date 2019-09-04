@@ -76,8 +76,7 @@ const verifySuccess = async (page, counter) => {
         console.log("cookie saved succesfully");
     } else {
         setTimeout(async function () {
-            success = await verifySuccess(page, counter + 1);
-            console.log("STATUS IS : ", success);
+            await verifySuccess(page, counter + 1);
         }, URL_CHECK_INTERVAL);
     }
 };
