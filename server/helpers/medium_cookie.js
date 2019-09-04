@@ -70,12 +70,10 @@ const verifySuccess = async (page, counter) => {
     console.log("Verifying if the cookie is valid");
     console.log("CHECKING URL : ", url);
     if (counter === 20) {
-        console.log("Error : timeout cookie generation");
-        return false;
+        throw "Error : timeout cookie generation";
     } else if (url === HOME_URL) {
         await saveCookie(page);
         console.log("cookie saved succesfully");
-        return true;
     } else {
         setTimeout(async function () {
             success = await verifySuccess(page, counter + 1);
