@@ -13,7 +13,7 @@ export default withRouter(function Board({editorMode = false, location}) {
     const {loading, error, data} = useQuery((location.pathname === "/editor-mode") ? GQL_QUERY_ARTICLES_EDITOR : GQL_QUERY_ARTICLES);
 
     if (loading) return <Loading/>;
-    if (error) return <p>Error :(</p>;
+    if (error) return <p>Error {JSON.stringify(error)}</p>;
     return (
         <Grid id={"board"}
               className={classes.grid}

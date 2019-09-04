@@ -7,8 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import './style/index.css';
 import RouterConfig from "./config/RouterConfig";
 
+console.log(process.env);
 const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
+    uri: `http://localhost:${process.env.REACT_APP_PORT}/graphql`,
 });
 
 const App = () => (

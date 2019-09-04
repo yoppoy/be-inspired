@@ -11,7 +11,6 @@ function HomePage({location}) {
 
     if (location.pathname === "/editor-mode")
         editorMode = true;
-    console.log(location);
     return (
         <div>
             <HomeBanner img={"/img/background.jpg"}
