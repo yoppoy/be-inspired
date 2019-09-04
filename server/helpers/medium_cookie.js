@@ -83,7 +83,7 @@ const verifySuccess = async (page) => {
 };
 
 const generateCookies = async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: true, args:['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     const cookiesExist = fs.existsSync(COOKIE_FILE_PATH);
     let cookiesValid = false;
