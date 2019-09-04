@@ -63,20 +63,22 @@ const verifyExistingCookies = async (page) => {
     return false
 };
 
-const verifySuccess = async (page) => {
+const verifySuccess = async (page, counter) => {
     const url = await page.url();
     let success;
 
     console.log("Verifying if the cookie is valid");
     console.log("CHECKING URL : ", url);
-    if (url === HOME_URL) {
-        console.log("Saving cookie");
+    if (counter === 20) {
+        console.log("Error : timeout cookie generation");
+        return false;
+    } else if (url === HOME_URL) {
         await saveCookie(page);
         console.log("cookie saved succesfully");
         return true;
     } else {
         setTimeout(async function () {
-            success = await verifySuccess(page);
+            success = await verifySuccess(page, counter + 1);
             console.log("STATUS IS : ", success);
         }, URL_CHECK_INTERVAL);
     }
@@ -87,22 +89,20 @@ const generateCookies = async () => {
     const page = await browser.newPage();
     const cookiesExist = fs.existsSync(COOKIE_FILE_PATH);
     let cookiesValid = false;
+    let status;
 
     if (cookiesExist)
         cookiesValid = await verifyExistingCookies(page);
     if (cookiesValid) {
         console.log("Generated cookies : valid");
+        return true;
     } else {
         console.log(`Generated cookies : ${!cookiesExist ? "not found" : "invalid"}`) ;
         await page.goto(config.mediumLoginLink);
-        setTimeout(async function () {
-            await browser.close();
-            throw "timeout error, cookie generation failed";
-        }, 20000);
-        await verifySuccess(page);
+        status = await verifySuccess(page, 0);
     }
     await browser.close();
-    return true;
+    return status;
 };
 
 const getCookies = async () => {
