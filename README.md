@@ -1,29 +1,29 @@
 # Be-inspired
 "I read a lot on medium, time to share it with those around me"
 
-NodeJs server scrapping medium bookmarks and serving data to a React App that displays them with a material UI
+Node.Js server scrapping medium bookmarks and serving data to a React App that displays them with a material UI
 
-
+## Setup
+In order to scrape Medium, this project uses a pre-generated medium login link. In order to generate this link, head over to the sign-in window on [medium.com](medium.com). Enter your mail address and confirm. Retrieve the generated link (one-time use) and add it as `MEDIUM_LOGIN_LINK` in your env variables. This is only required on the first launch of the project since the cookies are saved in a json file for later use. 
 ### Environment variables
-Setup the following environment variables in a `.env` file.
-```
-NODE_ENV=production
-PORT=4000
-MEDIUM_LIMIT=999
-MEDIUM_COOKIE='__cfduid=d957e3e20ecfa40c98bd31d7a0a0d406a1564905906;uid=662cf76a59aa;_ga=GA1.2.1750281271.1564990050;lightstep_session_id=fc8619d5aca4427b;pr=2;lightstep_guid/medium-web=19e7ef386ec5dd5d;sid=1:aMm/zKiMrerslFajedA3khUPBsCxnty/VIxlwkJS2TAoZcJ958tdqHouOwbzSl6k;sz=324;tz=-480;xsrf=U3fEOfAyHZeM;mpids=af4499sdfe0'
-MONGOOSE_DEBUG=false
-MONGO_HOST=mongodb://127.0.0.1:27017/be-inspired
-MONGO_USER=admin
-MONGO_PWD=root
-MONGO_PORT=27017
-```
+Setup the following environment variables in a `.env` file at the root of the project.
+
+| Env Variable | Description | Example |
+|--------------|-------------|---------|
+| `NODE_ENV` | Node environment | development |
+| `PORT` | Port to run the app on | 4000 |
+| `MONGOOSE_DEBUG` | Mongoose debug activated or not | true / false |
+| `MONGO_HOST` | Mongodb database url | mongodb://127.0.0.1:27017/be-inspired |
+| `MONGO_USER` | Mongodb user | user |
+| `MONGO_PWD` | Mongodb password | password |
+| `MEDIUM_LOGIN_LINK` | Generated medium link to generate a local cookie | https://medium.com/m/callback/email?token=f3101605993e&operation=login |
 
 ### Installing
 To install all the necessary dependencies :
 ```
 cd server && npm install && cd ../client && npm install
 ```
-To run the application in dev
+To run the application in development
 ```
 npm run dev
 ```
@@ -38,8 +38,9 @@ npm start
 
 * [Node.JS](https://nodejs.org) - The backend framework used
 * [GraphQL.js](https://graphql.org) - Query language used
-* [Cheerio](https://cheerio.js.org/) - Scrapper
 * [ReactJS](https://reactjs.org) - The frontend framework used
+* [Puppeteer](https://github.com/GoogleChrome/puppeteer) - Headless chromium
+* [Cheerio](https://cheerio.js.org/) - Scrapper
 
 ## Authors
 
