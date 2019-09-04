@@ -10,7 +10,7 @@ const envVarsSchema = Joi.object({
         .default(4040),
     MEDIUM_LIMIT: Joi.number()
         .default(0),
-    MEDIUM_COOKIE: Joi.string()
+    MEDIUM_LOGIN_LINK: Joi.string()
         .required(),
     MONGOOSE_DEBUG: Joi.boolean()
         .when('NODE_ENV', {
@@ -29,14 +29,15 @@ const envVarsSchema = Joi.object({
 const {error, value: envVars} = Joi.validate(process.env, envVarsSchema);
 
 if (error) {
-    throw new Error(`Config validation error: ${error.message}`);
+    console.log(`Config validation error: ${error.message}`);
+    throw `Config validation error: ${error.message}`;
 }
 
 const index = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     mediumLimit: envVars.MEDIUM_LIMIT,
-    mediumCookie: envVars.MEDIUM_COOKIE,
+    mediumLoginLink: envVars.MEDIUM_LOGIN_LINK,
     mongooseDebug: envVars.MONGOOSE_DEBUG,
     mongo: {
         host: `${envVars.MONGO_HOST}-${envVars.NODE_ENV}`,

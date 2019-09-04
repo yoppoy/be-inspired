@@ -24,8 +24,7 @@
     "create-react-app",
     "react"
   ],
-  "license": "MIT",
-  "devDependencies": {},
+  "license": "MIT"
   "dependencies": {
     "concurrently": "^4.1.2"
   }

@@ -33,7 +33,7 @@ const startDB = async () => {
 startDB().then(() => {
     startExpress().then(() => {
         initArticles().then(() => {
-            console.log("done");
+            console.log("status : finished");
         }).catch((e) => {
             console.log(e);
         });

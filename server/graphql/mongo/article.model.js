@@ -19,8 +19,12 @@ const ArticleSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
-});
+    }}, {
+        writeConcern: {
+            w: 'majority',
+            j: true
+        }
+    });
 
 /**
  * Add your

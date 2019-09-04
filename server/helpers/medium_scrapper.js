@@ -1,19 +1,21 @@
 const request = require("request");
 const cheerio = require("cheerio");
 const config = require('../config/index.js');
+const {getCookies} = require('./medium_cookie');
 
-const savedBookmarks = {
-    url: `https://medium.com/me/list/queue?limit=${config.mediumLimit}`,
-    headers: {
-        'Cookie': config.mediumCookie
-    }
-};
+/**
+ * There are 2 different types of bookmarks: saved and archived bookmarks
+ */
+const SAVED_BOOKMARKS_URL = `https://medium.com/me/list/queue?limit=${config.mediumLimit}`;
+const ARCHIVED_BOOKMARKS_URL = `https://medium.com/me/list/archive?limit=${config.mediumLimit}`;
 
-const archivedBookmarks = {
-    url: `https://medium.com/me/list/archive?limit=${config.mediumLimit}`,
-    headers: {
-        'Cookie': config.mediumCookie
-    }
+const bookmarksURL = (url, cookies) => {
+    return ({
+        url,
+        headers: {
+            'Cookie': cookies
+        }
+    });
 };
 
 const parseData = (html) => {
@@ -54,12 +56,18 @@ const scrapData = async () => {
     let saved;
     let archived;
 
-    saved = await requestData(savedBookmarks);
-    archived = await requestData(archivedBookmarks);
-    result.push(...saved);
-    result.push(...archived);
-    console.log("Scrapped: ", result.length, " articles");
-    return (result);
+    try {
+        const cookies = await getCookies();
+        saved = await requestData(bookmarksURL(SAVED_BOOKMARKS_URL, cookies));
+        archived = await requestData(bookmarksURL(ARCHIVED_BOOKMARKS_URL, cookies));
+        result.push(...saved);
+        result.push(...archived);
+        console.log("Scrapped: ", result.length, " articles");
+        return (result);
+    } catch (e) {
+        console.log("Error : ", e);
+        return null;
+    }
 };
 
 module.exports = scrapData;
