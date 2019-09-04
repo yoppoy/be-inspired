@@ -21,7 +21,7 @@ const formatCookie = (cookiesArr) => {
     return (back);
 };
 
-const saveCookie = async (page) => {
+const saveCookies = async (page) => {
     const cookiesArray = await page.cookies();
 
     return (new Promise((resolve, reject) => {
@@ -52,33 +52,34 @@ const getSavedCookies = () => {
 const verifyExistingCookies = async (page) => {
     const cookies = getSavedCookies();
 
+    console.log("verifying exisiting cookies");
     if (cookies) {
         for (let cookie of cookies) {
             await page.setCookie(cookie)
         }
         await page.goto(QUEUE_URL);
         const url = await page.url();
+        console.log("URL -> ", url);
         return url === QUEUE_URL;
     }
-    return false
+    return false;
 };
 
 const verifySuccess = async (page, counter) => {
     const url = await page.url();
-    let success;
 
-    console.log("Verifying if the cookie is valid");
-    console.log("CHECKING URL : ", url);
-    if (counter === 20) {
-        throw "timeout cookie generation";
-    } else if (url === HOME_URL) {
-        await saveCookie(page);
-        console.log("cookie saved succesfully");
-    } else {
-        setTimeout(async function () {
-            await verifySuccess(page, counter + 1);
-        }, URL_CHECK_INTERVAL);
-    }
+    console.log("URL -> ", url);
+    return (new Promise((resolve) => {
+        if (counter === 20) {
+            throw "timeout cookie generation";
+        } else if (url === HOME_URL) {
+            saveCookies(page).then(() => resolve());
+        } else {
+            setTimeout(async function () {
+                verifySuccess(page, counter + 1).then(() => resolve());
+            }, URL_CHECK_INTERVAL);
+        }
+    }))
 };
 
 const generateCookies = async () => {
@@ -95,11 +96,13 @@ const generateCookies = async () => {
         return true;
     } else {
         console.log(`Generated cookies : ${!cookiesExist ? "not found" : "invalid"}`) ;
+        console.log("URL -> ", config.mediumLoginLink);
         await page.goto(config.mediumLoginLink);
-        status = await verifySuccess(page, 0);
+        await verifySuccess(page, 0);
+        console.log("done");
     }
     await browser.close();
-    return status;
+    return true;
 };
 
 const getCookies = async () => {
