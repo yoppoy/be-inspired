@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node server",
-    "build": "cd ./client/ && cp ../.env . && cat .env && npm install && npm run build && cd ../server/ && npm install",
+    "build": "cd ./client/ && npm install && npm run build && cd ../server/ && npm install",
     "dev": "concurrently --kill-others \"cd server && npm start\" \"cd client && npm start\""
   },
   "cacheDirectories": [
