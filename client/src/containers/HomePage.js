@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {makeStyles, Typography} from "@material-ui/core";
 import Board from "../components/Board";
 import {withRouter} from "react-router-dom";

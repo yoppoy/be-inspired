@@ -3,17 +3,14 @@ import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {withRouter} from 'react-router-dom'
-import {useApolloClient} from "react-apollo-hooks";
+import {withRouter} from 'react-router-dom';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
-import {useQuery} from "react-apollo-hooks";
 
 const HeaderBar = ({location, history}) => {
     const classes = useStyles();
     const classesLabel = useStylesCustomLabel();
-    const client = useApolloClient();
 
     if (location.pathname === "/editor-mode")
         return (

@@ -41,7 +41,6 @@ const index = {
     mongooseDebug: envVars.MONGOOSE_DEBUG,
     mongo: {
         host: `${envVars.MONGO_HOST}-${envVars.NODE_ENV}`,
-        port: envVars.MONGO_PORT,
         user: envVars.MONGO_USER,
         password: envVars.MONGO_PWD
     }

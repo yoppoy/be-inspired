@@ -1,17 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {makeStyles} from "@material-ui/core";
 import {Button, Typography} from '@material-ui/core';
 import { scroller } from 'react-scroll';
 import {ArrowDownward} from '@material-ui/icons';
-import Board from "../components/Board";
-import {withRouter} from "react-router-dom";
-import {Parallax} from 'react-scroll-parallax';
 
 const scrollTo = (element, duration = 800, delay = 0) => {
     console.log("scrolling to ", element);
     scroller.scrollTo(element, {
         duration: duration,
-        delay: element,
+        delay: delay,
         smooth: 'easeInOutQuart'
     });
 };

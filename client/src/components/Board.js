@@ -1,11 +1,10 @@
 import React from 'react';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import Grid from '@material-ui/core/Grid';
 import ArticleCard from "./ArticleCard";
 import {makeStyles} from "@material-ui/core";
 import Loading from "./Loading";
 import {withRouter} from 'react-router-dom';
-import {Element} from 'react-scroll';
 import {GQL_QUERY_ARTICLES, GQL_QUERY_ARTICLES_EDITOR} from "../graphql";
 
 export default withRouter(function Board({editorMode = false, location}) {
