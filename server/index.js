@@ -15,7 +15,7 @@ const startExpress = async () => {
     app.get('*', (req,res) =>{
         res.sendFile(path.join(__dirname+'/../client/build/index.html'));
     });
-    app.listen(80, () => console.log('Server running on localhost:', 80));
+    app.listen(config.port, () => console.log('Server running on localhost:', config.port));
 
 };
 
