@@ -1,13 +1,8 @@
 const puppeteer = require('puppeteer');
-const jsonfile = require('jsonfile');
-const path = require('path');
-const fs = require('fs');
 const config = require('../config');
 const CookieController = require('../graphql/mongo/cookie.controller');
-const Cookie = require('../graphql/mongo/cookie.model');
 
 const COOKIE_VARIABLES = ["__cfduid", "uid", "_ga", "sid"];
-const COOKIE_FILE_PATH = path.resolve(__dirname, 'saved_cookie.json');
 const URL_CHECK_INTERVAL = 500;
 const QUEUE_URL = 'https://medium.com/me/list/queue';
 const SUCCESS_URL = 'https://medium.com/';
