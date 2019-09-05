@@ -3,12 +3,14 @@ const jsonfile = require('jsonfile');
 const path = require('path');
 const fs = require('fs');
 const config = require('../config');
+const CookieController = require('../graphql/mongo/cookie.controller');
+const Cookie = require('../graphql/mongo/cookie.model');
 
 const COOKIE_VARIABLES = ["__cfduid", "uid", "_ga", "sid"];
 const COOKIE_FILE_PATH = path.resolve(__dirname, 'saved_cookie.json');
 const URL_CHECK_INTERVAL = 500;
 const QUEUE_URL = 'https://medium.com/me/list/queue';
-const HOME_URL = 'https://medium.com/';
+const SUCCESS_URL = 'https://medium.com/';
 
 const formatCookie = (cookiesArr) => {
     let back = "";
@@ -21,48 +23,15 @@ const formatCookie = (cookiesArr) => {
     return (back);
 };
 
-const saveCookies = async (page) => {
+const saveCookie = async (page) => {
     const cookiesArray = await page.cookies();
-
-    return (new Promise((resolve, reject) => {
-        jsonfile.writeFile(COOKIE_FILE_PATH, cookiesArray, {spaces: 2},
-            function (err) {
-                if (err) {
-                    console.log('The file could not be written.', err)
-                    reject(err);
-                }
-                console.log('Session has been successfully saved');
-                resolve();
-            })
-    }));
+    let savedCookie = await CookieController.saveCookie(cookiesArray, config.mediumCookieRef);
+    return (savedCookie);
 };
 
-const getSavedCookies = () => {
-    const cookiesExist = fs.existsSync(COOKIE_FILE_PATH);
-
-    if (cookiesExist) {
-        const cookiesArr = require(COOKIE_FILE_PATH);
-        if (cookiesArr.length !== 0) {
-            return cookiesArr;
-        }
-    }
-    return null;
-};
-
-const verifyExistingCookies = async (page) => {
-    const cookies = getSavedCookies();
-
-    console.log("verifying exisiting cookies");
-    if (cookies) {
-        for (let cookie of cookies) {
-            await page.setCookie(cookie)
-        }
-        await page.goto(QUEUE_URL);
-        const url = await page.url();
-        console.log("URL -> ", url);
-        return url === QUEUE_URL;
-    }
-    return false;
+const getSavedCookie = async () => {
+    const cookies = await CookieController.getCookie(config.mediumCookieRef);
+    return (cookies);
 };
 
 const verifySuccess = async (page, counter) => {
@@ -72,8 +41,8 @@ const verifySuccess = async (page, counter) => {
     return (new Promise((resolve) => {
         if (counter === 20) {
             throw "timeout cookie generation";
-        } else if (url === HOME_URL) {
-            saveCookies(page).then(() => resolve());
+        } else if (url === SUCCESS_URL) {
+            saveCookie(page).then((result) => resolve(result));
         } else {
             setTimeout(async function () {
                 verifySuccess(page, counter + 1).then(() => resolve());
@@ -82,41 +51,58 @@ const verifySuccess = async (page, counter) => {
     }))
 };
 
-const generateCookies = async () => {
-    const browser = await puppeteer.launch({ headless: true, args:['--no-sandbox', '--disable-setuid-sandbox'] });
-    const page = await browser.newPage();
-    const cookiesExist = fs.existsSync(COOKIE_FILE_PATH);
-    let cookiesValid = false;
-    let status;
+const verifyExistingCookie = async (browser) => {
+    try {
+        const page = await browser.newPage();
+        const cookies = await CookieController.getCookie(config.mediumCookieRef);
 
-    if (cookiesExist)
-        cookiesValid = await verifyExistingCookies(page);
-    if (cookiesValid) {
-        console.log("Generated cookies : valid");
-        return true;
-    } else {
-        console.log(`Generated cookies : ${!cookiesExist ? "not found" : "invalid"}`) ;
-        console.log("URL -> ", config.mediumLoginLink);
-        await page.goto(config.mediumLoginLink);
-        await verifySuccess(page, 0);
-        console.log("done");
+        if (cookies) {
+            console.log("verifying exisiting cookies : ", cookies.length);
+            for (let cookie of cookies) {
+                await page.setCookie(cookie)
+            }
+            await page.goto(QUEUE_URL);
+            const url = await page.url();
+            console.log(url);
+            return (url === QUEUE_URL) ? "valid" : "invalid";
+        }
+        return "not found";
+    } catch (e) {
+        console.log("Error : ", e);
+        return (JSON.stringify(e));
     }
-    await browser.close();
-    return true;
 };
 
-const getCookies = async () => {
-    let cookiesGenerated = await generateCookies();
-    let cookies;
+const generateCookie = async () => {
+    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    let cookieStatus = await verifyExistingCookie(browser);
+    const page = await browser.newPage();
+    let cookie = null;
 
-    if (cookiesGenerated) {
-        cookies = await getSavedCookies();
-        return (formatCookie(cookies));
+    console.log("Cookie status : ", cookieStatus);
+    if (cookieStatus === "valid") {
+        console.log("Generated cookies : valid");
+        cookie = await getSavedCookie();
+    } else {
+        console.log(`Generated cookies : ${cookieStatus}`);
+        console.log("URL -> ", config.mediumLoginLink);
+        await page.goto(config.mediumLoginLink);
+        cookie = await verifySuccess(page, 0);
+    }
+    await browser.close();
+    return (cookie);
+};
+
+const getCookie = async () => {
+    let cookie = await generateCookie();
+
+    if (cookie) {
+        return (formatCookie(cookie));
     }
     return null;
 };
 
 module.exports = {
-    generateCookies,
-    getCookies
+    generateCookie,
+    getCookie
 };

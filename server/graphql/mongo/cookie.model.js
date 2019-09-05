@@ -4,27 +4,28 @@ const httpStatus = require('http-status');
 const APIError = require('../../helpers/APIError');
 
 /**
- * Article Schema
+ * Cookie Schema
  */
-const ArticleSchema = new mongoose.Schema({
-    title: {
+const CookieSchema = new mongoose.Schema({
+    values: {
+        type: [Object],
+        required: true
+    },
+    ref: {
         type: String,
         required: true,
         unique: true
     },
-    visible: {
-        type: Boolean,
-        default: true
-    },
     createdAt: {
         type: Date,
         default: Date.now
-    }}, {
-        writeConcern: {
-            w: 'majority',
-            j: true
-        }
-    });
+    }
+}, {
+    writeConcern: {
+        w: 'majority',
+        j: true
+    }
+});
 
 /**
  * Add your
@@ -36,40 +37,25 @@ const ArticleSchema = new mongoose.Schema({
 /**
  * Methods
  */
-ArticleSchema.method({
-
-});
+CookieSchema.method({});
 
 /**
  * Statics
  */
-ArticleSchema.statics = {
+CookieSchema.statics = {
     /**
-     * Set visibility
-     * @returns {Promise<Article, APIError>}
-     * @param id
-     * @param visible
+     * Get cookie by ref
+     * @returns {Promise<Cookie, APIError>}
+     * @param ref
      */
-    setVisibility(id, visible) {
-        console.log("Setting visibility : ", id, visible);
-        return this.findOneAndUpdate(
-            {_id: id},
-            {visible: visible},
-            {new: true});
-    },
-
-    /**
-     * Get article
-     * @returns {Promise<Article, APIError>}
-     * @param title
-     */
-    get(title) {
-        return this.findOne({title: title})
+    get(ref) {
+        return this.findOne({ref: ref})
             .exec()
-            .then((article) => {
-                if (article) {
+            .then((article, err) => {
+                if (err)
+                    return Promise.reject(err);
+                if (article)
                     return article;
-                }
                 return null;
             });
     },
@@ -78,20 +64,25 @@ ArticleSchema.statics = {
      * List articles in descending order of 'createdAt' timestamp.
      * @param {number} skip - Number of articles to be skipped.
      * @param {number} limit - Limit number of articles to be returned.
-     * @returns {Promise<Article[]>}
+     * @returns {Promise<Cookie[]>}
      */
-    findOrCreate(title) {
+
+    /**
+     * find or create cookie
+     * @returns {Promise<Cookie[]>}
+     */
+    updateOrCreate(values, ref) {
         return this.findOneAndUpdate(
-            {title: title},
-            {$setOnInsert: {title: title}},
-            {setDefaultsOnInsert: true, new: true, upsert: true});
+            {ref: ref},
+            {values: values, ref: ref},
+            {setDefaultsOnInsert: true, new: true, upsert: true})
     },
 
     /**
      * List articles in descending order of 'createdAt' timestamp.
      * @param {number} skip - Number of articles to be skipped.
      * @param {number} limit - Limit number of articles to be returned.
-     * @returns {Promise<Article[]>}
+     * @returns {Promise<Cookie[]>}
      */
     list({skip = 0, limit = 200} = {}) {
         return this.find()
@@ -104,6 +95,6 @@ ArticleSchema.statics = {
 ;
 
 /**
- * @typedef Article
+ * @typedef Cookie
  */
-module.exports = mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Cookie', CookieSchema);

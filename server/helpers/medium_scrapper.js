@@ -1,7 +1,7 @@
 const request = require("request");
 const cheerio = require("cheerio");
 const config = require('../config/index.js');
-const {getCookies} = require('./medium_cookie');
+const {getCookie} = require('./medium_cookie');
 
 /**
  * There are 2 different types of bookmarks: saved and archived bookmarks
@@ -57,7 +57,8 @@ const scrapData = async () => {
     let archived;
 
     try {
-        const cookies = await getCookies();
+        const cookies = await getCookie();
+        console.log("Cookie length : ", cookies.length);
         saved = await requestData(bookmarksURL(SAVED_BOOKMARKS_URL, cookies));
         archived = await requestData(bookmarksURL(ARCHIVED_BOOKMARKS_URL, cookies));
         result.push(...saved);

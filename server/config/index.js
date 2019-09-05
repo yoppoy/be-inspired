@@ -10,6 +10,8 @@ const envVarsSchema = Joi.object({
         .default(4040),
     MEDIUM_LIMIT: Joi.number()
         .default(0),
+    MEDIUM_COOKIE_REF: Joi.string()
+        .required(),
     MEDIUM_LOGIN_LINK: Joi.string()
         .required(),
     MONGOOSE_DEBUG: Joi.boolean()
@@ -37,6 +39,7 @@ const index = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     mediumLimit: envVars.MEDIUM_LIMIT,
+    mediumCookieRef: envVars.MEDIUM_COOKIE_REF,
     mediumLoginLink: envVars.MEDIUM_LOGIN_LINK,
     mongooseDebug: envVars.MONGOOSE_DEBUG,
     mongo: {
