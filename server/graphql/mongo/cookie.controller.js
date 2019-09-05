@@ -17,9 +17,7 @@ const getCookie = (ref) => {
         Cookie.get(ref).then((result, err) => {
             if (err)
                 reject(err);
-            if (result)
-                resolve(result.values);
-            resolve(null);
+            resolve(result ? result.values : null);
         });
     }));
 };

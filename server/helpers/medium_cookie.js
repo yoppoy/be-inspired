@@ -37,7 +37,7 @@ const getSavedCookie = async () => {
 const verifySuccess = async (page, counter) => {
     const url = await page.url();
 
-    console.log("URL -> ", url);
+    console.log("Verifying...");
     return (new Promise((resolve) => {
         if (counter === 20) {
             throw "timeout cookie generation";
@@ -85,7 +85,7 @@ const generateCookie = async () => {
         cookie = await getSavedCookie();
     } else {
         console.log(`Generated cookies : ${cookieStatus}`);
-        console.log("URL -> ", config.mediumLoginLink);
+        console.log("Loading login page");
         await page.goto(config.mediumLoginLink);
         cookie = await verifySuccess(page, 0);
     }
