@@ -1,5 +1,5 @@
 # Be-inspired
-Node.Js server scrapping medium bookmarks and serving data to a React App that displays them with a material UI. Built to run on [Heroku](heroku.com).
+Node.Js server scraping medium bookmarks and serving data to a React App that displays them with a material UI. Built to run on [Heroku](heroku.com).
 
 ## Setup
 In order to scrape Medium, this project uses a pre-generated medium login link to generate a cookie. In order to obtain this link, head over to the [sign-in window on Medium](https://medium.com/m/signin?&loginType=default). Sign in with your mail address and confirm. Retrieve the generated link from your emails and add it as `MEDIUM_LOGIN_LINK` in your env variables. This is only required on the first launch of the project since the cookies are then saved onto the database*.
@@ -42,7 +42,7 @@ npm start
 * [GraphQL.js](https://graphql.org) - Query language used
 * [ReactJS](https://reactjs.org) - The frontend framework used
 * [Puppeteer](https://github.com/GoogleChrome/puppeteer) - Headless chromium
-* [Cheerio](https://cheerio.js.org/) - Scrapper
+* [Cheerio](https://cheerio.js.org/) - Scraper
 
 ## Authors
 
@@ -54,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Scrapper inspired by [medium-marks](https://github.com/georgem3/medium-marks)
+* Scraper inspired by [medium-marks](https://github.com/georgem3/medium-marks)
